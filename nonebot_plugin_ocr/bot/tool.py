@@ -22,8 +22,3 @@ def parse_link(link: str) -> dict[str, str]:
         return {'base64image': link.removeprefix('base64://')}
     else:
         raise ValueError(f'Link not support: {link}')
-
-
-async def call_ocr_dummy(data, **param):
-    logger.error('OCR backend not initialized')
-    return '错误：OCR应用未工作'

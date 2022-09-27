@@ -5,6 +5,8 @@ description = "OCR plugin for nonebot2"
 authors = ["NewYearPrism"]
 maintainers = ["NewYearPrism"]
 readme = "README.md"
+homepage = "https://github.com/NewYearPrism/nonebot-plugin-ocr"
+keywords = ["nonebot", "nonebot2"]
 packages = [{include = "nonebot_plugin_ocr"}]
 
 [tool.poetry.dependencies]

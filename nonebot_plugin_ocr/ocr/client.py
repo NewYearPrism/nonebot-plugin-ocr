@@ -24,7 +24,7 @@ class Error(abc.ABC, BaseModel, extra='ignore'):
 class Client(abc.ABC):
     @staticmethod
     @abc.abstractmethod
-    def parse_result(result: str) -> Result:
+    def parse_content(result: str) -> Result | Error | None:
         pass
 
     @abc.abstractmethod
