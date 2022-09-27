@@ -2,6 +2,7 @@
 name = "nonebot-plugin-ocr"
 version = "0.1.0"
 description = "OCR plugin for nonebot2"
+license = "MIT"
 authors = ["NewYearPrism"]
 maintainers = ["NewYearPrism"]
 readme = "README.md"
