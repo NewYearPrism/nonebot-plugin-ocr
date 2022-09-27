@@ -1,0 +1,13 @@
+/.idea
+
+/poetry.lock
+dist
+
+__pycache__
+
+test*
+.pytest_cache
+
+.ocr
+
+*.env*
