@@ -1,8 +1,7 @@
-import asyncio
 import json
 
 import httpx
-import cache3
+import diskcache
 
 from nonebot_plugin_ocr.ocr.client import Client as OcrClient, Result as OcrResult, Error as OcrError
 from nonebot_plugin_ocr.config import BaiduCloudConfig
@@ -56,16 +55,15 @@ class BaiduCloudClient(OcrClient):
             case _:
                 raise ValueError('Failed to parse content')
 
-    _cache = cache3.JsonDiskCache(directory='.ocr/cache/baidu_cloud', name='cache.db')
+    _cache = diskcache.Cache(directory='.ocr/cache/baidu_cloud', disk=diskcache.JSONDisk, disk_compress_level=0)
 
     @classmethod
     def generate_client(cls, config: BaiduCloudConfig) -> 'BaiduCloudClient':
         if config.api_key and config.secret_key:
-            loop = asyncio.new_event_loop()
-            task = loop.create_task(cls.request_token(config.api_key, config.secret_key))
-            loop.run_until_complete(task)
-            loop.close()
-            access_token = json.loads(task.result()).get('access_token')
+            r = httpx.get(cls.TOKEN_URL, params={'grant_type': 'client_credentials',
+                                                 'client_id': config.api_key,
+                                                 'client_secret': config.secret_key})
+            access_token = json.loads(r.text).get('access_token')
             if not access_token:
                 raise RuntimeError('Failed to validate Baidu Cloud keys')
             else:
@@ -115,8 +113,7 @@ class BaiduCloudClient(OcrClient):
 
     async def _get_access_token(self) -> str:
         if self._caching == 'all' or self._caching == 'token':
-            cached = self._cache.get(json.dumps({'api_key': self._api_key, 'secret_key': self._secret_key}),
-                                     tag='token')
+            cached = self._cache.get(json.dumps({'api_key': self._api_key, 'secret_key': self._secret_key}))
             if cached:
                 return cached
         access_token = json.loads(await self.request_token(self._api_key, self._secret_key)).get('access_token')
@@ -124,12 +121,12 @@ class BaiduCloudClient(OcrClient):
             raise RuntimeError('Failed to acquire Baidu Cloud access token')
         if self._caching == 'all' or self._caching == 'token':
             self._cache.set(json.dumps({'api_key': self._api_key, 'secret_key': self._secret_key}), access_token,
-                            tag='token', timeout=30*24*60*60)  # access token 有效期为30天
+                            tag='token', expire=30*24*60*60)  # access token 有效期为30天
         return access_token
 
     async def _ocr(self, data: dict[str, str], **param) -> str:
         if self._caching == 'all':
-            cached = self._cache.get(json.dumps(data | param), tag='ocr')
+            cached = self._cache.get(json.dumps(data | param))
             if cached:
                 return cached
         access_token = await self._get_access_token()
@@ -154,5 +151,5 @@ class BaiduCloudClient(OcrClient):
                 lang = self._default_language
         ret_text = await self.request_ocr(api, access_token, data, lang=lang)
         if self._caching == 'all':
-            self._cache.set(json.dumps(data | param), ret_text, tag='ocr', timeout=self._cache_expire)
+            self._cache.set(json.dumps(data | param), ret_text, tag='ocr', expire=self._cache_expire)
         return ret_text
