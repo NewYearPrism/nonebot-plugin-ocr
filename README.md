@@ -1,2 +1,2 @@
 # nonebot-plugin-ocr
-OCR plugin for nonebot 2
+OCR plugin for nonebot2

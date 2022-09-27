@@ -1,6 +1,5 @@
 import asyncio
 import json
-import time
 
 import httpx
 import cache3
@@ -48,8 +47,14 @@ class BaiduCloudClient(OcrClient):
     }
 
     @staticmethod
-    def parse_result(result: str) -> BaiduCloudBaseResult:
-        return BaiduCloudBaseResult.parse_obj(json.loads(result))
+    def parse_content(content: str) -> BaiduCloudBaseResult | BaiduCloudError:
+        match json.loads(content):
+            case {'log_id': _} as d:
+                return BaiduCloudBaseResult.parse_obj(d)
+            case {'error_code': _} as d:
+                return BaiduCloudBaseResult.parse_obj(d)
+            case _:
+                raise ValueError('Failed to parse content')
 
     _cache = cache3.JsonDiskCache(directory='.ocr/cache/baidu_cloud', name='cache.db')
 
@@ -108,26 +113,28 @@ class BaiduCloudClient(OcrClient):
         data = {'image': b64image}
         return await self._ocr(data, **param)
 
-    async def _get_access_token(self):
+    async def _get_access_token(self) -> str:
         if self._caching == 'all' or self._caching == 'token':
             cached = self._cache.get(json.dumps({'api_key': self._api_key, 'secret_key': self._secret_key}),
                                      tag='token')
             if cached:
                 return cached
         access_token = json.loads(await self.request_token(self._api_key, self._secret_key)).get('access_token')
+        if not access_token:
+            raise RuntimeError('Failed to acquire Baidu Cloud access token')
         if self._caching == 'all' or self._caching == 'token':
             self._cache.set(json.dumps({'api_key': self._api_key, 'secret_key': self._secret_key}), access_token,
                             tag='token', timeout=30*24*60*60)  # access token 有效期为30天
-        return json.loads(await self.request_token(self._api_key, self._secret_key)).get('access_token')
+        return access_token
 
-    async def _ocr(self, data: dict[str, str], **param) -> str | None:
+    async def _ocr(self, data: dict[str, str], **param) -> str:
         if self._caching == 'all':
             cached = self._cache.get(json.dumps(data | param), tag='ocr')
             if cached:
                 return cached
         access_token = await self._get_access_token()
         if not access_token:
-            return
+            raise RuntimeError('Baidu Cloud access token missing')
         api: str = param.get('api')
         lang: str = param.get('lang')
         match api:
