@@ -4,8 +4,8 @@ from nonebot import logger
 from nonebot.plugin import PluginMetadata
 
 from .config import PluginConfig, from_toml
-from .ocr import init_ocr, get_ocr_callers
-from .bot import init_bot, get_matchers
+from .ocr.ocr_init import init_ocr, get_ocr_callers
+from .bot.bot_manage import init_bot, get_matchers
 
 global_config = nonebot.get_driver().config
 default_path = '.ocr/config.toml'
