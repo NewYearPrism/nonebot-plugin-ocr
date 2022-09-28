@@ -12,16 +12,13 @@
 </div>
 
 ## NoneBot 适配器支持
-***
  + [OneBot V11](https://onebot.adapters.nonebot.dev/)
 
 ## OCR 应用支持
-***
  + [百度智能云](https://cloud.baidu.com/product/ocr)（Web应用，内置）
 
 
 ## 部署指南
-***
 ### 一. 安装插件
 + 方式一：使用 pip
   > 1.安装 nonebot-plugin-ocr
@@ -59,11 +56,9 @@
 
 
 # 使用方法
-***
 + [使用演示](docs/usage.md)
 
 
 # 特别感谢
-***
 + [cq-picsearcher-bot](https://github.com/Tsuk1ko/cq-picsearcher-bot)
 + [baidu-aip](https://pypi.org/project/baidu-aip/)

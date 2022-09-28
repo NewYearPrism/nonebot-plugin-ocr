@@ -1,9 +1,7 @@
 # 配置文件
-***
 > 本插件使用[TOML](https://toml.io/cn/v1.0.0)格式配置文件
 
 # 结构
-***
 > ### bot
 > *类型：表*<br/>
 > 机器人配置
@@ -49,7 +47,6 @@
 > > 缓存模式，可选"all", "token", "disabled"，默认为"all"
 
 # 示例
-***
 ```
 # config.sample.toml
 [bot]
