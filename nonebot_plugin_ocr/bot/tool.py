@@ -1,7 +1,5 @@
 import re
 
-from nonebot import logger
-
 spliter = re.compile(r'\s+')
 
 

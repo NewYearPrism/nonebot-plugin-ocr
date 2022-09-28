@@ -3,8 +3,8 @@ import json
 import httpx
 import diskcache
 
-from nonebot_plugin_ocr.ocr.client import Client as OcrClient, Result as OcrResult, Error as OcrError
-from nonebot_plugin_ocr.config import BaiduCloudConfig
+from .client import Client as OcrClient, Result as OcrResult, Error as OcrError
+from ..config import BaiduCloudConfig
 
 
 class BaiduCloudBaseResult(OcrResult):
