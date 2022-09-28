@@ -1,0 +1,13 @@
+[bot]
+ocr_commands = ["ocr"]
+
+[bot.onebot]
+whitelist_group = [""]
+whitelist_user = [""]
+
+[ocr]
+backend = ""
+
+[ocr.baidu_cloud]
+api_key = ""
+secret_key = ""
