@@ -8,8 +8,8 @@ from nonebot.matcher import Matcher
 from nonebot.params import Arg
 from nonebot.typing import T_State
 
-from nonebot_plugin_ocr.config import OnebotConfig
-from nonebot_plugin_ocr.ocr.client import Result as OcrResult, Error as OcrError
+from ..config import OnebotConfig
+from ..ocr.client import Result as OcrResult, Error as OcrError
 
 
 class Onebot11Bot:
