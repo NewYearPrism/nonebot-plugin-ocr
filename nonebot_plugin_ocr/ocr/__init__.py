@@ -2,9 +2,9 @@ import functools
 
 from nonebot import logger
 
-from nonebot_plugin_ocr.config import OcrConfig
+from ..config import OcrConfig
 from .client import Client, Result as OcrResult, Error as OcrError
-from nonebot_plugin_ocr.ocr.baidu_cloud import BaiduCloudClient
+from .baidu_cloud import BaiduCloudClient
 
 ocr_clients: dict[str, Client] = dict()
 
