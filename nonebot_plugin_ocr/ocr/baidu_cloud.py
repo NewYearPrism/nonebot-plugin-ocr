@@ -149,7 +149,7 @@ class BaiduCloudClient(OcrClient):
                 lang = self.LANGUAGE_ALIAS.get(lang.lower())
             case _:
                 lang = self._default_language
-        ret_text = await self.request_ocr(api, access_token, data, lang=lang)
+        ret_text = await self.request_ocr(api, access_token, data, language_type=lang)
         if self._caching == 'all':
             self._cache.set(json.dumps(data | param), ret_text, tag='ocr', expire=self._cache_expire)
         return ret_text

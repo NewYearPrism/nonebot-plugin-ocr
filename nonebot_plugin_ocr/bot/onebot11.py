@@ -34,17 +34,22 @@ class Onebot11Bot:
         img = None
         if event.message.count('image'):
             img = event.message.get('image', 1)
+            logger.debug(f'Got image in message {event.message}')
         elif event.reply and event.reply.message.count('image'):
             img = event.reply.message.get('image', 1)
+            logger.debug(f'Got image in reply message {event.reply.message}')
         if img:
             matcher.set_arg('img', img)
         state['ocr_param'] = self.make_param(event.message.extract_plain_text())
 
     async def ocr_got_img(self, bot: Bot, matcher: Matcher, state: T_State, img_candidate: Message = Arg('img')):
         if img_candidate.count('image'):
-            img_file = img_candidate.get('image')[0].data.get('file')
-            img = await bot.get_image(file=img_file)
-            data = self.make_data(img.get('url'))
+            if 'url' in img_candidate.get('image')[0].data:
+                img = img_candidate.get('image')[0].data.get('url')
+            else:
+                img_file = img_candidate.get('image')[0].data.get('file')
+                img = (await bot.get_image(file=img_file)).get('url')
+            data = self.make_data(img)
             param = state.get('ocr_param')
             reply: Message = Message()
             try:
