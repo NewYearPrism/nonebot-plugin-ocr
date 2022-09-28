@@ -1,6 +1,7 @@
 from typing import Callable, Awaitable
 
 from nonebot import logger
+from nonebot.adapters.onebot.v11.bot import Bot
 from nonebot.adapters.onebot.v11.event import MessageEvent, GroupMessageEvent, PrivateMessageEvent
 from nonebot.adapters.onebot.v11.message import Message, MessageSegment
 from nonebot.matcher import Matcher
@@ -39,10 +40,11 @@ class Onebot11Bot:
             matcher.set_arg('img', img)
         state['ocr_param'] = self.make_param(event.message.extract_plain_text())
 
-    async def ocr_got_img(self, matcher: Matcher, state: T_State, img_candidate: Message = Arg('img')):
+    async def ocr_got_img(self, bot: Bot, matcher: Matcher, state: T_State, img_candidate: Message = Arg('img')):
         if img_candidate.count('image'):
-            img = img_candidate.get('image')[0].data.get('file')
-            data = self.make_data(img)
+            img_file = img_candidate.get('image')[0].data.get('file')
+            img = await bot.get_image(file=img_file)
+            data = self.make_data(img.get('url'))
             param = state.get('ocr_param')
             reply: Message = Message()
             try:
@@ -61,4 +63,4 @@ class Onebot11Bot:
             finally:
                 await matcher.finish(reply)
         else:
-            await matcher.finish('没有识别到图片')
+            await matcher.finish('已取消')
