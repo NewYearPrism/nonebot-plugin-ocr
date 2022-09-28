@@ -1,7 +1,6 @@
 <div align="center">
 
 # nonebot-plugin-ocr
-***
 
 基于 [NoneBot2](https://v2.nonebot.dev/) 的文字识别插件
 
