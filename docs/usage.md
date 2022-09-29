@@ -1,5 +1,9 @@
-# 演示
-  > 演示环境：Onebot V11，百度智能云OCR，nonebot-plugin-ocr 0.3.0
+# 准备
++ 需要将使用者用户或所在的群组加入[白名单](config.md#botonebotwhitelist_group)
+    + [NoneBot超级用户](https://v2.nonebot.dev/docs/tutorial/configuration#superusers)无以上限制，不需要加入白名单即可使用
+
+# 使用演示
+  > 演示环境：Onebot V11（NoneBot超级用户账号），百度智能云OCR，nonebot-plugin-ocr 0.3.0
 + 发送命令消息 -> 发送图片消息
 
 <a href="https://sm.ms/image/5RNIeojZ3bvd2E4" target="_blank"><img src="https://s2.loli.net/2022/09/29/5RNIeojZ3bvd2E4.jpg" width="300px"/></a>
@@ -18,6 +22,6 @@
 
 
 # 提示
-+ 默认命令为 "ocr"，可在[配置](config.md)中修改
++ 默认命令为 "ocr"，可在[配置](config.md#botocr_commands)中修改
 + 如图所示，OCR命令接受以空格隔开的参数，可用于指定识别语言种类等，支持的值取决于OCR应用
     + 目前暂定命令格式为 ocr \[语言\] \[模式\]，暂时只支持位置参数 
