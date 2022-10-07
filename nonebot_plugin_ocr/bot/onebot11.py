@@ -24,9 +24,10 @@ class Onebot11Bot:
 
     async def permission_checker(self, event: MessageEvent) -> bool:
         if isinstance(event, GroupMessageEvent):
-            return event.user_id in self.config.whitelist_user or event.group_id in self.config.whitelist_group
+            return str(event.user_id) in self.config.whitelist_user \
+                   or str(event.group_id) in self.config.whitelist_group
         elif isinstance(event, PrivateMessageEvent):
-            return event.user_id in self.config.whitelist_user
+            return str(event.user_id) in self.config.whitelist_user
         else:
             return False
 
