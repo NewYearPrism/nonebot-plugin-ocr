@@ -58,7 +58,14 @@
 # 使用方法
 + [使用演示](docs/usage.md)
 
+# TODO
++ 支持本地OCR软件
++ 支持更多OCR Web应用
+
+欢迎使用[Issues](https://github.com/NewYearPrism/nonebot-plugin-ocr/issues)提出建议
 
 # 特别感谢
-+ [cq-picsearcher-bot](https://github.com/Tsuk1ko/cq-picsearcher-bot)
-+ [baidu-aip](https://pypi.org/project/baidu-aip/)
+本插件Web部分参考了 
+[cq-picsearcher-bot](https://github.com/Tsuk1ko/cq-picsearcher-bot), 
+[baidu-aip](https://pypi.org/project/baidu-aip/) 
+的源码
